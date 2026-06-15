@@ -1,0 +1,2358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Experience Transformation - SOP & Knowledge Base</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest:    #1a3a2a;
+    --pine:      #2d5a3d;
+    --sage:      #4a7c5e;
+    --mint:      #7bbf94;
+    --pale:      #d4ead9;
+    --cream:     #f5f2ea;
+    --warm-off:  #faf8f4;
+    --ink:       #1c1c1c;
+    --muted:     #5a5a5a;
+    --border:    #d0cfc8;
+    --gold:      #c89b3c;
+    --amber:     #f0a500;
+    --red-soft:  #c0392b;
+    --blue-soft: #2c6e9c;
+    --sidebar-w: 280px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-off);
+    color: var(--ink);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--forest);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    z-index: 100;
+  }
+
+  .sidebar-brand {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .sidebar-brand .label {
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--mint);
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .sidebar-brand h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    line-height: 1.3;
+    color: #fff;
+  }
+
+  .sidebar-brand .version {
+    margin-top: 8px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .sidebar nav { padding: 16px 0; flex: 1; }
+
+  .nav-section {
+    padding: 14px 24px 6px;
+    font-size: 9.5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    font-weight: 500;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 24px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    transition: all 0.15s;
+    border-left: 3px solid transparent;
+    line-height: 1.3;
+    cursor: pointer;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: #fff;
+    background: rgba(255,255,255,0.07);
+    border-left-color: var(--mint);
+  }
+
+  .nav-link .icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
+
+  .sidebar-footer {
+    padding: 16px 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    line-height: 1.6;
+  }
+
+  /* ── MAIN ── */
+  .main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(245,242,234,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 50;
+  }
+
+  .topbar-breadcrumb {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .topbar-meta {
+    font-size: 11.5px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .badge-green  { background: #e8f5ed; color: #2d7a47; }
+  .badge-amber  { background: #fef7e0; color: #b07a00; }
+  .badge-red    { background: #fdecea; color: #b00020; }
+  .badge-blue   { background: #e3eff8; color: #1a5c8a; }
+  .badge-forest { background: var(--forest); color: #fff; }
+
+  .content { padding: 56px 48px; max-width: 980px; }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 72px; scroll-margin-top: 80px; }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--pale);
+  }
+
+  .section-icon {
+    width: 44px; height: 44px;
+    background: var(--forest);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .section-header-text h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    color: var(--forest);
+    margin-bottom: 4px;
+  }
+
+  .section-header-text p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--pine);
+    margin: 28px 0 12px;
+  }
+
+  h4 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--ink);
+    margin: 16px 0 8px;
+    text-transform: uppercase;
+    font-size: 11.5px;
+    letter-spacing: 1px;
+  }
+
+  p { font-size: 14.5px; line-height: 1.75; color: var(--ink); margin-bottom: 12px; }
+
+  /* ── CALLOUT BOXES ── */
+  .callout {
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 20px 0;
+    border-left: 4px solid;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .callout-green  { background: #f0faf3; border-color: #2d7a47; }
+  .callout-amber  { background: #fffaed; border-color: var(--amber); }
+  .callout-red    { background: #fef5f5; border-color: var(--red-soft); }
+  .callout-blue   { background: #f0f6fb; border-color: var(--blue-soft); }
+  .callout-forest { background: var(--pale); border-color: var(--forest); }
+
+  .callout strong { display: block; margin-bottom: 4px; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; opacity: 0.7; }
+
+  /* ── TABLES ── */
+  .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: 10px; border: 1px solid var(--border); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+
+  thead { background: var(--forest); color: #fff; }
+
+  thead th {
+    padding: 13px 16px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
+  tbody tr:nth-child(even) { background: #faf9f5; }
+  tbody tr:hover { background: var(--pale); transition: background 0.15s; }
+
+  td { padding: 12px 16px; vertical-align: top; line-height: 1.55; border-top: 1px solid var(--border); }
+
+  td:first-child { font-weight: 500; white-space: nowrap; }
+
+  /* ── DAY TIMELINE ── */
+  .timeline { margin: 24px 0; }
+
+  .day-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0;
+    margin-bottom: 4px;
+  }
+
+  .day-label {
+    background: var(--forest);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 13px;
+    border-radius: 8px 0 0 8px;
+    padding: 14px 10px;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .day-content {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    padding: 14px 20px;
+  }
+
+  .day-content .tone {
+    font-size: 10.5px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--sage);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .day-content .channels {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .day-content .note {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── STAGE CARDS ── */
+  .stage-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 20px 0;
+  }
+
+  .stage-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stage-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--mint);
+  }
+
+  .stage-card .stage-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+
+  .stage-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--forest);
+    margin: 0 0 8px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .stage-card p { font-size: 12.5px; color: var(--muted); margin: 0; }
+
+  /* ── RULES LIST ── */
+  .rules-list {
+    list-style: none;
+    margin: 16px 0;
+  }
+
+  .rules-list li {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    line-height: 1.6;
+    align-items: flex-start;
+  }
+
+  .rules-list li:last-child { border-bottom: none; }
+
+  .rules-list .icon { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+
+  /* ── SCRIPT BOX ── */
+  .script-box {
+    background: var(--forest);
+    color: #d4ead9;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    font-size: 13.5px;
+    line-height: 1.75;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .script-box .script-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--mint);
+    margin-bottom: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+  }
+
+  /* ── KB COMPLIANCE SECTION ── */
+  .kb-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin: 20px 0;
+    overflow: hidden;
+  }
+
+  .kb-card-header {
+    background: var(--forest);
+    color: #fff;
+    padding: 16px 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .kb-card-header .num {
+    background: var(--mint);
+    color: var(--forest);
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .kb-card-header h3 {
+    margin: 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .kb-card-body { padding: 20px 22px; }
+
+  .kb-concern {
+    background: #fef5f5;
+    border-left: 3px solid var(--red-soft);
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 14px;
+    font-size: 13.5px;
+    color: #700;
+    line-height: 1.6;
+  }
+
+  .kb-concern strong { display: block; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; opacity: 0.7; }
+
+  .kb-response {
+    background: #f0faf3;
+    border-left: 3px solid #2d7a47;
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 10px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: #1a3a2a;
+  }
+
+  .kb-response strong { display: block; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; opacity: 0.65; }
+
+  /* ── STATUS TAGS ── */
+  .status-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .status-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    background: #fff;
+  }
+
+  .status-card .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+
+  .tag-flip    { background: #e8f5ed; color: #2d6b3e; }
+  .tag-removed { background: #e3eff8; color: #1a5c8a; }
+  .tag-declined{ background: #fdecea; color: #8b0000; }
+  .tag-noresp  { background: #fef7e0; color: #7a5500; }
+  .tag-pending { background: var(--pale); color: var(--forest); }
+  .tag-dnc     { background: #f0e8f5; color: #5a1a8a; }
+
+  .status-card p { font-size: 12.5px; color: var(--muted); margin: 0; line-height: 1.5; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--forest);
+    margin: 0 -48px 56px;
+    padding: 56px 48px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(123,191,148,0.12);
+    pointer-events: none;
+  }
+
+  .hero .kicker {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--mint);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 38px;
+    line-height: 1.15;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+
+  .hero p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.7);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+
+  .hero-meta {
+    margin-top: 28px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .hero-meta-item {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .hero-meta-item span { color: var(--mint); font-weight: 500; }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+  /* ── PRINT / MISC ── */
+  @media print {
+    .sidebar { display: none; }
+    .main { margin-left: 0; }
+    .topbar { position: static; }
+    .content { padding: 24px; }
+  }
+
+  code {
+    font-family: 'DM Mono', monospace;
+    font-size: 12.5px;
+    background: var(--pale);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--forest);
+  }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+
+  .info-block {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+
+  .info-block .label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .info-block .value {
+    font-size: 22px;
+    font-family: 'DM Serif Display', serif;
+    color: var(--forest);
+  }
+
+  .info-block .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  /* ── KB SEARCH ── */
+  .kb-search-bar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 48px;
+    margin: -56px -48px 0;
+  }
+
+  .kb-search-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: 100px;
+    padding: 12px 20px;
+    max-width: 640px;
+    width: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    cursor: text;
+  }
+
+  .kb-search-input-wrap:focus-within {
+    border-color: var(--sage);
+    box-shadow: 0 2px 16px rgba(74,124,94,0.15);
+  }
+
+  .kb-search-input-wrap svg {
+    flex-shrink: 0;
+    color: var(--sage);
+  }
+
+  .kb-search-input-wrap input {
+    border: none;
+    outline: none;
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    width: 100%;
+  }
+
+  .kb-search-input-wrap input::placeholder {
+    color: var(--muted);
+    opacity: 0.55;
+  }
+
+  .search-clear {
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 13px;
+    flex-shrink: 0;
+    display: none;
+    background: var(--pale);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-weight: 500;
+  }
+  .search-clear.visible { display: flex; }
+  .search-clear:hover { background: var(--mint); color: var(--forest); }
+
+  .kb-search-results {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(26,58,42,0.13);
+    max-height: 400px;
+    overflow-y: auto;
+    max-width: 640px;
+    width: 100%;
+    margin-top: 8px;
+    display: none;
+    flex-direction: column;
+  }
+
+  .kb-search-results.visible { display: flex; }
+
+  .kb-search-result-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 13px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+
+  .kb-search-result-item:last-child { border-bottom: none; }
+
+  .kb-search-result-item:hover { background: var(--pale); }
+
+  .kb-search-result-icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: var(--pale);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    margin-top: 1px;
+  }
+
+  .kb-search-result-body { flex: 1; min-width: 0; }
+
+  .kb-search-result-title {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--forest);
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .kb-search-result-snippet {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .kb-search-result-title mark,
+  .kb-search-result-snippet mark {
+    background: rgba(123,191,148,0.3);
+    color: var(--pine);
+    border-radius: 2px;
+    padding: 0 2px;
+    font-style: normal;
+  }
+
+  .kb-search-no-results {
+    padding: 24px 20px;
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .kb-search-hint {
+    font-size: 11px;
+    color: var(--muted);
+    opacity: 0.6;
+    margin-top: 6px;
+    max-width: 640px;
+    padding-left: 20px;
+    font-family: 'DM Mono', monospace;
+  }
+
+
+  .sidebar-owner {
+    font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 6px;
+  }
+
+
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="label">LawnStarter / Lawn Love</div>
+    <h1>Experience Transformation</h1>
+    <div class="version">SOP & KB · v2.3 · Jun 2026</div>
+    <div class="sidebar-owner">Owner: Karen Carmen</div>
+  </div>
+
+
+
+  <nav>
+    <div class="nav-section">Overview</div>
+    <a onclick="goTo('mission')" data-id="mission" class="nav-link"><span class="icon">🎯</span>Mission & Scope</a>
+    <a onclick="goTo('team')" data-id="team" class="nav-link"><span class="icon">👥</span>Team Structure</a>
+    <a onclick="goTo('platforms')" data-id="platforms" class="nav-link"><span class="icon">⭐</span>Review Platforms</a>
+
+    <div class="nav-section">Blitz Workflow</div>
+    <a onclick="goTo('blitz-overview')" data-id="blitz-overview" class="nav-link"><span class="icon">⚡</span>Blitz</a>
+    <a onclick="goTo('day1')" data-id="day1" class="nav-link"><span class="icon">1️⃣</span>Day 1 - Launch</a>
+    <a onclick="goTo('days2to8')" data-id="days2to8" class="nav-link"><span class="icon">📅</span>Days 2–8 Cadence</a>
+    <a onclick="goTo('automation')" data-id="automation" class="nav-link"><span class="icon">🤖</span>Automated Follow-Up</a>
+
+    <div class="nav-section">Process Policies</div>
+    <a onclick="goTo('refunds')" data-id="refunds" class="nav-link"><span class="icon">💳</span>Resolution Flow</a>
+    <a onclick="goTo('closure')" data-id="closure" class="nav-link"><span class="icon">✅</span>Closure & Ticket Status</a>
+    <a onclick="goTo('special-cases')" data-id="special-cases" class="nav-link"><span class="icon">🛡️</span>Special Cases</a>
+    <a onclick="goTo('bbb')" data-id="bbb" class="nav-link"><span class="icon">🏛️</span>BBB Process</a>
+    <a onclick="goTo('thumbtack')" data-id="thumbtack" class="nav-link"><span class="icon">📌</span>Thumbtack Process</a>
+    <a onclick="goTo('no-admin')" data-id="no-admin" class="nav-link"><span class="icon">🔍</span>No Admin / Unidentified</a>
+
+    <div class="nav-section">Knowledge Base</div>
+    <a onclick="goTo('kb-compliance')" data-id="kb-compliance" class="nav-link"><span class="icon">⚖️</span>Compliance FAQ</a>
+    <a onclick="goTo('kb-metrics')" data-id="kb-metrics" class="nav-link"><span class="icon">📊</span>Metrics Explained</a>
+    <a onclick="goTo('scripts')" data-id="scripts" class="nav-link"><span class="icon">💬</span>Call Scripts</a>
+  </nav>
+
+  <div class="sidebar-footer">
+    Owner: Karen Carmen - Manager<br>
+    SME Support: Shiena Vega<br>
+    Updated: June 2026
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+
+  <div class="content">
+
+
+
+    <div class="kb-search-bar">
+      <div class="kb-search-input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="kbSearch" placeholder="Search the ET Knowledge Base..." autocomplete="off" spellcheck="false" />
+        <span class="search-clear" id="searchClear" onclick="clearSearch()">✕</span>
+      </div>
+      <div class="kb-search-results" id="searchResults"></div>
+      <div class="kb-search-hint" id="searchHint" style="display:none;">Press Esc to close</div>
+    </div>
+
+    <!-- HERO -->
+    <div class="hero" id="top">
+      <div class="kicker">Experience Transformation · SOP & Knowledge Base</div>
+      <h1>Standard Operating<br>Procedure & Agent Guide</h1>
+      <p>The complete reference for the Experience Transformation team - covering the 8-Day Blitz workflow, channel cadences, refund policy, special cases, ticket handling, and compliance clarity.</p>
+      <div class="hero-meta">
+        <div class="hero-meta-item">👤 Manager <span>Karen Carmen</span></div>
+        <div class="hero-meta-item">🧑‍💼 SME <span>Shiena Vega</span></div>
+      </div>
+    </div>
+
+    <!-- ═══════ SECTION 1: MISSION ═══════ -->
+    <section class="section" id="mission">
+      <div class="section-header">
+        <div class="section-icon">🎯</div>
+        <div class="section-header-text">
+          <h2>Mission & Scope</h2>
+          <p>What the ET team does, who it serves, and the brands it represents.</p>
+        </div>
+      </div>
+
+      <p>The <strong>Experience Transformation (ET) team</strong> evolved from what was previously known as the <strong>Review Flipping team</strong>. While improving brand ratings remains a shared goal, the team's focus has grown into something broader - reaching out to customers who had a negative experience, understanding their concerns, and delivering genuine resolutions.</p>
+
+      <p>ET is an internal team within <strong>LawnStarter</strong>, supporting all three brands - <strong>LawnStarter (LS)</strong>, <strong>Lawn Love (LL)</strong>, and <strong>HomeGnome (HG)</strong> - across multiple review platforms. For details on outreach identity, resolution approach, and platform-specific processes, see the relevant sections of this document.</p>
+
+      <div class="callout callout-forest">
+        <strong>Core Principle</strong>
+        We present the customer with resolution options and let them tell us what would turn their experience around. We check if what they want is possible - if yes, we offer it; if not, we negotiate the best alternative. Once the customer confirms the resolution improved their experience, we softly position the review update ask. The review update is never a condition of the resolution. We always process it regardless of whether the customer agrees to update or remove their review.ew outcome.
+      </div>
+
+      <h3>Brands & Platforms</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Platform</th><th>Outreach Identity</th><th>Platform Response (Public Reply)</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Trustpilot</td><td>Consumer Complaints Bureau</td><td>Brand (LS / LL / HG)</td><td>LS: 4.7 (6,865) · LL: 4.7 (2,390) · HG: 4.4 (108)</td></tr>
+            <tr><td>Google My Business</td><td>Consumer Complaints Bureau</td><td>Brand (LS / LL / HG)</td><td>260 verified listings · LS: 181 · LL: 74 · HG: 5</td></tr>
+            <tr><td>Thumbtack (Standard)</td><td>Consumer Complaints Bureau</td><td>Brand (LS / LL / HG)</td><td>LS: 4.7 · LL: 4.1 · HG: 4.5 · Loop in Natalia on all cases</td></tr>
+            <tr><td>Thumbtack (Special Cases)</td><td>Brand (LS / LL) directly</td><td>Brand (LS / LL)</td><td>LS and LL only · HG not included · Assigned agents: Megan, RC, Cess</td></tr>
+            <tr><td>Apple App Store</td><td>Consumer Complaints Bureau</td><td>Brand (LS / LL / HG)</td><td>LS: 4.6 (16,152) · LL: 4.7 (4,837) · HG: 4.3 (35)</td></tr>
+            <tr><td>Google Play Store</td><td>Consumer Complaints Bureau</td><td>Brand (LS / LL)</td><td>LS: 4.0 (42 ratings) · LL: 3.6 (last 28 days)</td></tr>
+            <tr><td>BBB (Complaints & Reviews)</td><td>Brand (LS / LL) directly</td><td>Brand (LS / LL)</td><td>LS and LL only · HG not included · Never use CCB identity for BBB</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-amber">
+        <strong>When Outreach Comes Directly From the Brand</strong><br>
+        Agents contact customers as LawnStarter, Lawn Love, or HomeGnome (not CCB) in three situations: Thumbtack Special Cases, all BBB complaints and reviews, and when a customer explicitly requests to speak with the brand directly.
+      </div>
+    </section>
+
+    <!-- ═══════ SECTION 2: TEAM ═══════ -->
+    <section class="section" id="team">
+      <div class="section-header">
+        <div class="section-icon">👥</div>
+        <div class="section-header-text">
+          <h2>Team Structure</h2>
+          <p>Roles, responsibilities, and reporting lines within Experience Transformation.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Name</th><th>Role</th><th>Key Responsibilities</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Karen Carmen</td><td>Manager</td><td>Approves and processes all refunds/credits; primary escalation point; authorizes ticket closure exceptions; maintains process documentation; oversees BBB process; final sign-off on manager-level decisions; monitors team performance and scorecards; reviews special case handling; coaches agents and conducts quality reviews; primary liaison between ET and leadership; drives process improvements and compliance alignment; oversees onboarding and training of new team members; validates EOD reports and provides leadership with performance updates</td></tr>
+            <tr><td>Shiena Vega</td><td>ET SME Support</td><td>Approves refunds/credits in Manager's absence; trains team on process updates; secondary BBB POC; Retention Negative Review triggers escalation POC (customers who trigger to leave a negative review)</td></tr>
+            <tr><td>Rosemarie (RC) Cabangbang</td><td>Experience Specialist</td><td>General ET; TT Special Case POC; BBB secondary POC; creates TT-linked tickets; 1-star review RCA and reports</td></tr>
+            <tr><td>Megan Harris</td><td>Experience Specialist</td><td>General ET + TT Special Case primary handler; BBB primary POC</td></tr>
+            <tr><td>Kenny Espinoza</td><td>Experience Specialist</td><td>General ET; iOS & Google Play reviews; positive reviews; training</td></tr>
+            <tr><td>Princess Fullente (Cess)</td><td>Experience Specialist</td><td>General ET; positive reviews backup</td></tr>
+            <tr><td>Jocelyn Borillo</td><td>Experience Specialist</td><td>General ET; positive reviews</td></tr>
+            <tr><td>Charina Catindig</td><td>Experience Specialist</td><td>General ET; Positive reviews</td></tr>
+            <tr><td>Davidson Pillado II</td><td>Experience Specialist</td><td>General ET; handles iOS & Google Play reviews</td></tr>
+            <tr><td>Jessa Ann Cueto</td><td>Experience Specialist</td><td>General ET; handles iOS & Google Play reviews</td></tr>
+            <tr><td>Annie Carmela Panaligan</td><td>Experience Specialist</td><td>General ET; handles iOS & Google Play reviews</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+
+    </section>
+
+    <!-- ═══════ SECTION 3: PLATFORMS ═══════ -->
+    <section class="section" id="platforms">
+      <div class="section-header">
+        <div class="section-icon">⭐</div>
+        <div class="section-header-text">
+          <h2>Review Platforms & Current Ratings</h2>
+          <p>Platform overview, current performance, and key distinctions agents must know.</p>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="info-block">
+          <div class="label">Trustpilot — LS</div>
+          <div class="value">4.7 ⭐</div>
+          <div class="sub">6,865 reviews · up from 2.3 in 2022</div>
+        </div>
+        <div class="info-block">
+          <div class="label">Trustpilot — LL</div>
+          <div class="value">4.7 ⭐</div>
+          <div class="sub">2,390 reviews</div>
+        </div>
+        <div class="info-block">
+          <div class="label">Trustpilot — HG</div>
+          <div class="value">4.4 ⭐</div>
+          <div class="sub">108 reviews</div>
+        </div>
+        <div class="info-block">
+          <div class="label">Google My Business</div>
+          <div class="value">260 listings</div>
+          <div class="sub">LS: 181 · LL: 74 · HG: 5</div>
+        </div>
+        <div class="info-block">
+          <div class="label">Thumbtack — LS</div>
+          <div class="value">4.7 ⭐</div>
+          <div class="sub">Special case process applies · HG not on TT</div>
+        </div>
+        <div class="info-block">
+          <div class="label">Thumbtack — LL</div>
+          <div class="value">4.1 ⭐</div>
+          <div class="sub">Special case process applies</div>
+        </div>
+        <div class="info-block">
+          <div class="label">Thumbtack — HG</div>
+          <div class="value">4.5 ⭐</div>
+          <div class="sub">No BBB or TT Special Case outreach for HG</div>
+        </div>
+        <div class="info-block">
+          <div class="label">iOS App Store — LS</div>
+          <div class="value">4.6 ⭐</div>
+          <div class="sub">16,152 ratings</div>
+        </div>
+        <div class="info-block">
+          <div class="label">iOS App Store — LL</div>
+          <div class="value">4.7 ⭐</div>
+          <div class="sub">4,837 ratings</div>
+        </div>
+        <div class="info-block">
+          <div class="label">iOS App Store — HG</div>
+          <div class="value">4.3 ⭐</div>
+          <div class="sub">35 ratings</div>
+        </div>
+        <div class="info-block">
+          <div class="label">Google Play — LS</div>
+          <div class="value">4.0 ⭐</div>
+          <div class="sub">42 ratings</div>
+        </div>
+        <div class="info-block">
+          <div class="label">Google Play — LL</div>
+          <div class="value">3.6 ⭐</div>
+          <div class="sub">Last 28 days</div>
+        </div>
+      </div>
+
+      <h3>Platform-Specific Distinctions</h3>
+      <p>The following cases are purely resolution-driven. Agents do not ask customers to update or remove their review under any of these scenarios.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Type</th><th>Affects Rating?</th><th>Response Deadline</th><th>ET Goal</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>BBB Complaint</td><td>✅ Yes (A+ to F scale)</td><td>LS: 10 days · LL: 7 days</td><td>Resolve concern; respond on platform; post official response Day 8-9 (LS) or 5-6 (LL). Do NOT ask cx to update/remove review.</td></tr>
+            <tr><td>BBB Review</td><td>❌ No</td><td>No strict deadline</td><td>Respond professionally; resolve concern. Do NOT ask cx to update/remove BBB review.</td></tr>
+            <tr><td>Thumbtack Special Cases</td><td>N/A</td><td>Per TT Trust & Safety timeline</td><td>Resolution-driven only. Do NOT ask cx to update/remove their Thumbtack review.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══════ SECTION 4: BLITZ OVERVIEW ═══════ -->
+    <section class="section" id="blitz-overview">
+      <div class="section-header">
+        <div class="section-icon">⚡</div>
+        <div class="section-header-text">
+          <h2>Blitz</h2>
+          <p>The structured follow-up rhythm used across all standard review tickets.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-green">
+        <strong>What is the Blitz Process?</strong>
+        The Blitz Process is the overall operating standard of the Experience Transformation team. Everything in this KB — the SOPs, the workflows, the communication templates, and the Resolution Flow — are all part of the Blitz Process. It replaced the previous way of working and is now the single framework ET runs on. The core idea is simple: faster outreach leads to faster resolution, and faster resolution leads to faster improvement in both Flip Rate and Accepted Resolution Rate. The quicker we reach a customer and address their concern, the higher the likelihood of turning that experience around.
+      </div>
+
+      <div class="callout callout-amber">
+        <strong>Blitz Process vs. Blitz Follow-Up vs. Resolution Flow — What is the difference?</strong>
+        These three things work together but they operate at different levels. Understanding how they connect helps agents know exactly what to do at every stage.<br><br>
+        <strong>Blitz Process</strong> is the big picture. It is the entire ET operating model — the philosophy, the structure, the tools, and the standards all rolled into one. When we say "we follow the Blitz Process," we mean we follow everything in this KB.<br><br>
+        <strong>Blitz Follow-Up</strong> lives inside the Blitz Process. It is the specific 8-day outreach cadence agents follow to make contact with customers. It governs when we reach out, through which channel, and in what tone — from the Day 1 launch all the way to Day 8 closure. It is about timing and persistence.<br><br>
+        <strong>Resolution Flow</strong> also lives inside the Blitz Process. It is what happens inside a live conversation once a customer actually responds. It governs how agents discover what the customer wants, how they offer or negotiate a solution, how they confirm the resolution, and how they softly position the review update ask. It is about the quality and structure of the conversation itself.<br><br>
+        In short: the Blitz Follow-Up gets us to the conversation. The Resolution Flow is how we conduct it.
+      </div>
+
+      <p>The Blitz Follow-Up is an <strong>8-day, multi-channel outreach cycle</strong> designed to reach customers through email, SMS, and call — rotating channels to maximize visibility while remaining respectful. After 8 days without a DNC, the ticket moves to Pending and re-engages after 30 days.</p>
+
+      <h3>How the 8-Day Blitz Follow-Up Works</h3>
+      <p>The 8-day cadence is the outreach structure agents follow to make initial contact and maintain follow-up throughout the process. How it plays out depends on how the customer engages:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th style="width:35%;">Scenario</th><th>What Agent Does</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Customer responds</td>
+              <td>Stop the cadence and shift into the resolution flow. Refer to the Resolution Offer Quick Reference below.</td>
+            </tr>
+            <tr>
+              <td>Customer goes quiet after contact but before resolution</td>
+              <td>Continue the remaining Blitz days to re-engage.</td>
+            </tr>
+            <tr>
+              <td>Customer never responds Day 1 through Day 8</td>
+              <td>Ticket moves to a 30-day hold, then a second Blitz round begins.</td>
+            </tr>
+            <tr>
+              <td>Customer responded but no resolution reached after 8 days</td>
+              <td>Close the ticket at the end of the 8-day push.</td>
+            </tr>
+            <tr>
+              <td>Customer accepted resolution but went quiet before confirming</td>
+              <td>Up to 3 follow-up attempts, then close if still no response.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Resolution Offer Quick Reference</h3>
+      <p>Before starting any outreach, agents should be familiar with what we can offer and how to position it. The flow is the same regardless of identity (CCB or Brand) - what changes is the language used.</p>
+
+      <h4>CCB Version</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Customer Wants</th><th>Agent Response (CCB)</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Service redo / reschedule / provider switch</td>
+              <td>"I'm sorry for the earlier experience. I can work with [Brand] to arrange [redo/reschedule/provider switch/free mow] for you. Does that work for you?" → Wait for customer to confirm acceptance → "Glad we could work through this together. If that improvement gets to show in your review, it would really mean a lot and goes a long way for the team." away."</td>
+            </tr>
+            <tr>
+              <td>Customer explicitly requests refund / credit</td>
+              <td>"I completely understand. I'll work with [Brand] to get that reviewed and will update you as soon as possible." → Wait for Manager approval → Inform customer of approved amount → Wait for customer to confirm acceptance → "Glad we could work through this together. If that improvement gets to show in your review, it would really mean a lot and goes a long way for the team." <span class="badge badge-amber">Never confirm refund before Manager approval. Never offer refund/credit as the first solution.</span></td>
+            </tr>
+            <tr>
+              <td>Customer declines to update review first</td>
+              <td>"No problem at all - I completely understand. I will go ahead and coordinate the resolution with [Brand] regardless. I just ask that if you do feel satisfied with how things were handled, please consider updating or removing your review."</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Brand Version (BBB / TT Special Cases / Customer Request)</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Customer Wants</th><th>Agent Response (Brand)</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Service redo / reschedule / provider switch</td>
+              <td>"I'm truly sorry for the experience. We can arrange [redo/reschedule/provider switch/free mow] for you. Does that work for you?" → Wait for customer to confirm acceptance → "Glad we could work through this together. If that improvement gets to show in your review, it would really mean a lot and goes a long way for the team."</td>
+            </tr>
+            <tr>
+              <td>Customer explicitly requests refund / credit</td>
+              <td>"I completely understand. Let me get that reviewed on our end and I'll update you as soon as possible." → Wait for Manager approval → Inform customer of approved amount → Wait for customer to confirm acceptance → "Glad we could work through this together. If that improvement gets to show in your review, it would really mean a lot and goes a long way for the team." <span class="badge badge-amber">Never confirm refund before Manager approval. Never offer refund/credit as the first solution.</span></td>
+            </tr>
+            <tr>
+              <td>Customer declines to update review first</td>
+              <td>"No problem at all - I completely understand. We will go ahead and process the resolution regardless. I just ask that if you do feel satisfied with how things were handled, please consider updating or removing your review."</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-amber">
+        <strong>Important</strong>
+        An agent's two days off do not count toward the 8-day cycle. The channel rotation (email → SMS → call) applies primarily when a customer is unresponsive on a channel; if they are responsive on one channel, continue using that channel for the remainder of the blitz.
+      </div>
+
+      <div class="timeline">
+        <div class="day-row">
+          <div class="day-label">Day 1</div>
+          <div class="day-content">
+            <div class="tone">Launch - All Channels</div>
+            <div class="channels">Email + SMS → Call Attempt → Call Attempt 2 (if no answer) → Voicemail</div>
+            <div class="note">Triage first hour. Send email and SMS at the same time. Make two call attempts - if no answer on either, leave a voicemail.</div>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-label">Day 2</div>
+          <div class="day-content">
+            <div class="tone">Soft - Friendly Check-In</div>
+            <div class="channels">Email + SMS</div>
+            <div class="note">48-hour automated follow-up triggers if ticket is Pending + ET Resolution Outcome = Flip/Remove.</div>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-label">Day 3</div>
+          <div class="day-content">
+            <div class="tone">Clear - Check Resolution Status</div>
+            <div class="channels">Call + Email</div>
+            <div class="note">Manual call. If no answer, follow up with Email 3 (72-hour email). If customer answers the call, email is not necessary.</div>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-label">Day 4</div>
+          <div class="day-content">
+            <div class="tone">Firm - Direct Request</div>
+            <div class="channels">Call + SMS</div>
+            <div class="note">Call first. If no answer, follow up with SMS. If customer answers the call, SMS is not necessary.</div>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-label">Day 5</div>
+          <div class="day-content">
+            <div class="tone">Strong - Action Needed</div>
+            <div class="channels">Call + Email (Email 4)</div>
+            <div class="note">Call first. If no answer, send Email 4 (120-hour email). Subject: "Re: Final Follow Up on Your Review." If customer answers the call, email is not necessary.</div>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-label">Day 6</div>
+          <div class="day-content">
+            <div class="tone">Strong Resolution Assurance</div>
+            <div class="channels">Call + Email (if no call answer)</div>
+            <div class="note">If customer answers the call, email is not necessary.</div>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-label">Day 7</div>
+          <div class="day-content">
+            <div class="tone">Final Reminder - Courtesy Nudge</div>
+            <div class="channels">SMS + Email</div>
+            <div class="note">SMS first. If no response, follow up with email. Keep tone warm and respectful.</div>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-label">Day 8</div>
+          <div class="day-content">
+            <div class="tone">Reassess - Keep Pending if Actionable</div>
+            <div class="channels">Final Call + Final Email (Email 5)</div>
+            <div class="note">Final call. If no answer, send Email 5. If customer answers the call, email is not necessary. Close only if DNC or exempt exception. Otherwise → Pending → 30-day hold → restart Blitz.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-amber">
+        <strong>Process Under Review - 30-Day Hold & Second Blitz Round</strong>
+        The current process after Day 8 (30-day hold followed by a second full 8-day Blitz) is currently being reviewed. The proposed change is to submit unresponsive tickets as Solved at the end of the first 8-day push and resurface them through Zendesk Round Robin during the Winter outreach season, rather than keeping them in pending limbo. This is pending final sign-off from leadership before any changes are implemented. Agents should continue following the current process until further notice.
+      </div>
+
+      <h3>EOD Slack Format (Day 1)</h3>
+      <div class="script-box">
+        <div class="script-label">Copy-Paste Format</div>
+        EOD – [Agent Name] | [Date]<br>
+        🎫 Tickets: [#] | 🔄 Flipped: [#] | ⏳ Pending: [#]<br>
+        ⚠️ Issues: [list or N/A] | 🌟 Wins: [highlight]
+      </div>
+    </section>
+
+    <!-- ═══════ SECTION 5: DAY 1 DETAIL ═══════ -->
+    <section class="section" id="day1">
+      <div class="section-header">
+        <div class="section-icon">1️⃣</div>
+        <div class="section-header-text">
+          <h2>Day 1 - Blitz Launch</h2>
+          <p>Full detail on triage, initial outreach, and call attempts.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-blue">
+        <strong>Note on Scripts & Templates</strong>
+        All scripts and email templates below are guides for structure and tone - not word-for-word requirements. Agents are encouraged to personalize their outreach to feel natural and genuine. What matters is that the core message, framing, and any required language (such as the review update ask) remain consistent with this guide.
+      </div>
+
+      <h3>Hour 1 - Triage</h3>
+      <p>Before any outreach, agents must investigate the ticket: review the customer's complaint, check admin data, verify the brand, identify the root cause, and document in Zendesk (customer details, admin notes, root cause, problem statement, desired settlement). <strong>No outreach begins until documentation is complete.</strong></p>
+
+      <h3>Email 1 - Initial Outreach</h3>
+      <div class="callout callout-green">
+        <strong>Describing the Issue in Outreach</strong>
+        If the customer's concern is clearly stated in their review and confirmed in admin data, agents should briefly describe the issue in their outreach. This shows the customer their concern was actually read and understood - making the outreach feel genuine rather than generic.<br><br>
+        ✅ Describe the issue only if it is clearly stated in the review and confirmed in admin<br>
+        ✅ Keep it brief - one line, not a full recap<br>
+        ✅ CCB framing: "I'd like to help get this resolved for you"<br>
+        ✅ Brand framing: "We take this seriously and I'd like to make this right for you"<br>
+        ❌ Do not assume or add details not in the review or admin<br>
+        ❌ Do not sound accusatory or like you are repeating their complaint back at them
+      </div>
+      <div class="script-box">
+        <div class="script-label">CCB Version · Subject: Following Up on Your [Brand] Review</div>
+        Hi [Customer Name],<br><br>
+        This is [Agent Name] from the Consumer Complaints Bureau. I'm reaching out regarding the review you left about [Brand]. I came across your concern regarding [brief description of issue - e.g. the lawn not being fully cut on your last visit] and I'd like to work with [Brand] on your behalf to help get this resolved for you.<br><br>
+        If you have any other concerns you need assistance with, please feel free to respond to this email and I'll be sure to help you address those right away.<br><br>
+        You can reply here or call me at [phone number]. If the issue has already been resolved, we'd truly appreciate your updated review on [site].<br><br>
+        Thank you,<br>
+        [Agent Name]<br>
+        Resolution Specialist, Consumer Complaints Bureau
+      </div>
+      <div class="script-box">
+        <div class="script-label">Brand Version (BBB / TT Special Cases / Customer Request) · Subject: Following Up on Your [Brand] Review</div>
+        Hi [Customer Name],<br><br>
+        This is [Agent Name] from [Brand]. I'm reaching out regarding the review you recently left for us. I came across your concern regarding [brief description of issue - e.g. the lawn not being fully cut on your last visit] and we take this seriously - I'd like to make this right for you.<br><br>
+        If you have any other concerns you need assistance with, please feel free to respond to this email and I'll be sure to help you address those right away.<br><br>
+        You can reply here or call me at [phone number].<br><br>
+        Thank you,<br>
+        [Agent Name]<br>
+        [Brand] Team
+      </div>
+
+      <h3>SMS 1 - Nudge (Send Immediately After Email)</h3>
+      <div class="script-box">
+        <div class="script-label">CCB Version</div>
+        Hi [Name], this is [Agent] from the Consumer Complaints Bureau. I just emailed you about your [Brand] review regarding [brief description of issue] - could you check when you have a moment? If not yet resolved, reply here and I'll help right away.
+      </div>
+      <div class="script-box">
+        <div class="script-label">Brand Version (BBB / TT Special Cases / Customer Request)</div>
+        Hi [Name], this is [Agent] from [Brand]. I just emailed you about your recent review regarding [brief description of issue] - could you check when you have a moment? We'd love to make this right for you. Reply here and I'll take care of it right away.
+      </div>
+
+      <h3>Call Attempt 1</h3>
+      <div class="script-box">
+        <div class="script-label">CCB Version - Opening</div>
+        "Hi [Name], this is [Agent] from the Consumer Complaints Bureau. I'm calling about your review of [Brand] regarding [brief description of issue] - is now a good time to talk about how we can help get this resolved for you?"
+      </div>
+      <div class="script-box">
+        <div class="script-label">Brand Version (BBB / TT Special Cases / Customer Request) - Opening</div>
+        "Hi [Name], this is [Agent] from [Brand]. I'm calling regarding your recent review about [brief description of issue] - is now a good time? I'd love to make this right for you."
+      </div>
+<p>Refer to the <strong>Resolution Offer Quick Reference</strong> at the top of the Blitz Overview section for the full CCB and Brand response guide.</p>
+
+      <h3>Call Attempt 2 - If No Answer on First Call</h3>
+      <div class="script-box">
+        <div class="script-label">CCB Version</div>
+        "Hi [Name], [Agent] again from the Consumer Complaints Bureau - just following up on your [Brand] review. I wanted to check in and understand what solution would work best for you. If there is anything we can do to make your experience right, I am happy to help."
+      </div>
+      <div class="script-box">
+        <div class="script-label">Brand Version (BBB / TT Special Cases / Customer Request)</div>
+        "Hi [Name], [Agent] again from [Brand] - just following up on your recent review. I wanted to check in and understand what solution would work best for you. If there is anything we can do to make your experience right, I am happy to help."
+      </div>
+
+      <div class="callout callout-blue">
+        <strong>If No Answer After Both Call Attempts - Leave Voicemail</strong><br>
+        CCB Version: "Hi [Name], this is [Agent] from the Consumer Complaints Bureau. I was calling about your [Brand] review - I'd love to help get your concern resolved. Please call me back at [phone number] or reply to my email. Thank you!"<br><br>
+        Brand Version: "Hi [Name], this is [Agent] from [Brand]. I was reaching out regarding your recent review - we'd love the opportunity to make things right. Please call me back at [phone number] or reply to my email. Thank you!"
+      </div>
+
+      <h3>End-of-Day Day 1 Tasks</h3>
+      <ul class="rules-list">
+        <li><span class="icon">✅</span>Respond to all inbound messages or callbacks</li>
+        <li><span class="icon">✅</span>Confirm any approved refunds or credits with Manager</li>
+        <li><span class="icon">✅</span>Update Zendesk tags and internal notes</li>
+        <li><span class="icon">✅</span>Escalate cases needing Manager attention</li>
+        <li><span class="icon">✅</span>Post EOD Slack update</li>
+      </ul>
+    </section>
+
+    <!-- ═══════ SECTION 6: DAYS 2–8 ═══════ -->
+    <section class="section" id="days2to8">
+      <div class="section-header">
+        <div class="section-icon">📅</div>
+        <div class="section-header-text">
+          <h2>Days 2–8 - Drip Follow-Up</h2>
+          <p>Email, SMS, and call templates for each day of the blitz cycle.</p>
+        </div>
+      </div>
+
+      <h3>Email 2 - Day 2 (48 hrs after pending)</h3>
+      <div class="script-box">
+        <div class="script-label">CCB Version · Subject: Following Up on Your Review</div>
+        Hi [Customer Name],<br><br>
+        This is [assignee] from Consumer Complaints Bureau. I wanted to follow up with you regarding your review and experience with [Brand].<br><br>
+        We've carefully reviewed your concerns and if you have any other experiences you need assistance with, please feel free to respond to this email or call us at [phone number] and I'll be sure to help you address those right away.<br><br>
+        If [Brand] successfully resolved your concerns, we'd be grateful if you could consider updating or removing your review on [site].
+      </div>
+      <div class="script-box">
+        <div class="script-label">Brand Version · Subject: Following Up on Your Review</div>
+        Hi [Customer Name],<br><br>
+        This is [assignee] from [Brand]. I wanted to follow up with you regarding your recent review and experience with us.<br><br>
+        We've carefully reviewed your concerns and if you have any other experiences you need assistance with, please feel free to respond to this email or call us at [phone number] and I'll be sure to help you address those right away.<br><br>
+        Thank you,<br>
+        [Assignee]<br>
+        [Brand] Team
+      </div>
+
+      <h3>Email 3 - Day 3 (72 hrs after pending)</h3>
+      <div class="script-box">
+        <div class="script-label">CCB Version · Subject: Re: Following Up on Your Review</div>
+        Dear [Customer Name],<br><br>
+        This is [assignee] from Consumer Complaints Bureau following up on my previous email about your [Brand] review.<br><br>
+        I'm still available to help with any unresolved concerns. If [Brand] has successfully addressed your issues, we'd appreciate you updating or removing your review on [site].<br><br>
+        Please reply to this email or call me at [phone number] if you'd like to discuss this directly.<br><br>
+        Looking forward to hearing from you.<br>
+        Best regards, [Assignee] · Consumer Complaints Bureau
+      </div>
+      <div class="script-box">
+        <div class="script-label">Brand Version · Subject: Re: Following Up on Your Review</div>
+        Dear [Customer Name],<br><br>
+        This is [assignee] from [Brand] following up on my previous email regarding your recent review.<br><br>
+        I'm still available to help with any unresolved concerns. Please reply to this email or call me at [phone number] if you'd like to discuss this directly.<br><br>
+        Looking forward to hearing from you.<br>
+        Best regards, [Assignee] · [Brand] Team
+      </div>
+
+      <h3>Email 4 - Day 5 (120 hrs after pending)</h3>
+      <div class="script-box">
+        <div class="script-label">CCB Version · Subject: Re: Final Follow Up on Your Review</div>
+        Dear [Customer Name],<br><br>
+        This is [assignee] from Consumer Complaints Bureau with a final follow-up regarding your review of [Brand].<br><br>
+        If [Brand] has resolved your issues, please consider updating or removing your review on [site]. If you still need assistance, please reach out to us at [phone number].
+      </div>
+      <div class="script-box">
+        <div class="script-label">Brand Version · Subject: Re: Final Follow Up on Your Review</div>
+        Dear [Customer Name],<br><br>
+        This is [assignee] from [Brand] with a follow-up regarding your recent review.<br><br>
+        If we have resolved your concerns, we would greatly appreciate your updated review whenever you get a chance. If you still need assistance, please reach out to us at [phone number].<br><br>
+        Thank you,<br>
+        [Assignee]<br>
+        [Brand] Team
+      </div>
+
+      <h3>Email 5 - Day 8 (Final)</h3>
+      <div class="script-box">
+        <div class="script-label">CCB Version · Subject: Re: Final Follow Up on Your Review</div>
+        Dear [Customer Name],<br><br>
+        This is [assignee] from Consumer Complaints Bureau with a final follow-up regarding your review of [Brand].<br><br>
+        If [Brand] has resolved your issues, please consider updating or removing your review on [site]. If you still need assistance, this is your last opportunity to contact us about this matter at [phone number].
+      </div>
+      <div class="script-box">
+        <div class="script-label">Brand Version · Subject: Re: Final Follow Up on Your Review</div>
+        Dear [Customer Name],<br><br>
+        This is [assignee] from [Brand] with a final follow-up regarding your recent review.<br><br>
+        If we have resolved your concerns, we would greatly appreciate your updated review whenever you get a chance. If you still need assistance, please don't hesitate to reach out to us at [phone number].<br><br>
+        Thank you,<br>
+        [Assignee]<br>
+        [Brand] Team
+      </div>
+
+      <h3>Automated Stage Emails (Stages 1–5)</h3>
+      <p>When a ticket is set to Pending with ET Resolution Outcome = Flip or Remove, the Zendesk automation handles the staged email follow-ups. See the <a href="#automation">Automated Follow-Up section</a> for full detail on stage conditions and actions.</p>
+
+      <div class="callout callout-forest">
+        <strong>Stage Email Signature Note</strong>
+        Automated emails use a "contact" system-generated signature. This cannot be changed - it is admin-generated and not modifiable. Agents do not need to take any action on the signature for automated emails.
+      </div>
+    </section>
+
+    <!-- ═══════ SECTION 7: AUTOMATION ═══════ -->
+    <section class="section" id="automation">
+      <div class="section-header">
+        <div class="section-icon">🤖</div>
+        <div class="section-header-text">
+          <h2>Automated Follow-Up Process</h2>
+          <p>How the Zendesk automation triggers, what each stage does, and agent responsibilities at each stage.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-blue">
+        <strong>Objective</strong>
+        The automation reduces research time and ensures reviewers who commit to updating or removing their review follow through. It triggers only when the ET Resolution Outcome and ticket status are correctly set.
+      </div>
+
+      <h3>Trigger Conditions</h3>
+      <p>The automation fires <strong>only</strong> when both of these are true simultaneously:</p>
+      <ul class="rules-list">
+        <li><span class="icon">✅</span>ET Resolution Outcome = <strong>Flip</strong> or <strong>Remove</strong></li>
+        <li><span class="icon">✅</span>Ticket Status = <strong>Pending</strong></li>
+      </ul>
+
+      <div class="stage-grid">
+        <div class="stage-card">
+          <div class="stage-num">STAGE 0</div>
+          <h4>24-Hour Buffer</h4>
+          <p>No email, SMS, or call. Ticket stays Pending. Automation advances to Stage 1.</p>
+        </div>
+        <div class="stage-card">
+          <div class="stage-num">STAGE 1</div>
+          <h4>Stage 1 Email Sent</h4>
+          <p>Status → Open. Agent conducts Stage 1 activities (call, SMS). Return to Pending when done.</p>
+        </div>
+        <div class="stage-card">
+          <div class="stage-num">STAGE 2</div>
+          <h4>Stage 2 Email Sent</h4>
+          <p>Status → Open. Agent conducts Stage 2 activities. Return to Pending when done.</p>
+        </div>
+        <div class="stage-card">
+          <div class="stage-num">STAGE 3</div>
+          <h4>Stage 3 Email Sent</h4>
+          <p>Status → Open. Agent conducts Stage 3 activities. Return to Pending when done.</p>
+        </div>
+        <div class="stage-card">
+          <div class="stage-num">STAGE 4</div>
+          <h4>Stage 4 Email Sent</h4>
+          <p>Status → Open. Agent conducts Stage 4 activities. Return to Pending when done.</p>
+        </div>
+        <div class="stage-card">
+          <div class="stage-num">STAGE 5</div>
+          <h4>Stage 5 Email Sent</h4>
+          <p>Final stage. Status → Open. Conduct final activities. If still no response → On Hold.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-red">
+        <strong>Critical Compliance Rules</strong>
+        Always return the ticket to <strong>Pending</strong> after each stage activity. Never skip stages. Incorrect status = automation failure. Only set to <strong>On Hold</strong> if no response was received after all stages complete.
+      </div>
+    </section>
+
+    <!-- ═══════ SECTION 8: REFUNDS ═══════ -->
+    <section class="section" id="refunds">
+      <div class="section-header">
+        <div class="section-icon">💳</div>
+        <div class="section-header-text">
+          <h2>Resolution Flow</h2>
+          <p>The approved ET standard for how agents conduct live conversations with customers — from discovery through to resolution and the review ask. Approved June 2026.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-green">
+        <strong>Resolution Flow — Approved Standard (June 2026)</strong>
+        The Resolution Flow is the approved way ET agents engage with customers once contact is made. It is customer-led by design — we ask first, listen second, and offer solutions only when needed. The review update ask always comes last, always soft, and is never a condition of the resolution.
+      </div>
+
+      <h3>Step 1 — Ask First. Let the Customer Lead.</h3>
+      <p>Before offering anything, ask the customer what would help resolve or improve their experience. Do not lead with solutions.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Identity</th><th>Script</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Brand</td>
+              <td><em>"I really appreciate you sharing your experience with us, and I would love to make this right. Is there anything specific that would help improve or resolve things for you?"</em></td>
+            </tr>
+            <tr>
+              <td>CCB</td>
+              <td><em>"Thank you for taking the time to share what happened. My goal is to make sure your concern is fully addressed, so I just want to ask — what do you feel would help resolve or improve your experience?"</em></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Step 1B — If the Customer is Not Sure (Path B)</h3>
+      <p>Only when the customer cannot identify what they want does the agent step in with tailored options based on the root cause of the negative review.</p>
+      <div class="script-box">
+        <div class="script-label">Path B Script</div>
+        "I completely understand, and based on what happened, I think a [redo / reschedule / provider switch / credit] might be the best way to make this right. Would any of those work for you?"
+      </div>
+
+      <h3>Step 1C — When the Customer's Request is Outside Approval Limits</h3>
+      <p>If what the customer wants falls outside what we can approve, agents must negotiate before escalating. Never immediately decline or confirm.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Scenario</th><th>What the Agent Does</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Request is under $75</td>
+              <td>Agent can proceed. No escalation needed.</td>
+            </tr>
+            <tr>
+              <td>Request is between $75 and $200</td>
+              <td>Agent must attempt to negotiate down first. Use: <em>"I completely understand where you are coming from. Let me see what I can do — I want to make sure we find something that works for both of us."</em> If the customer insists and will not budge, escalate to AM for approval.</td>
+            </tr>
+            <tr>
+              <td>Request is over $200</td>
+              <td>Escalate to AM immediately. Agent cannot confirm or deny. Use: <em>"I want to make sure this gets the right attention. Let me loop in my manager to review this for you and I will follow up as soon as I have an update."</em></td>
+            </tr>
+            <tr>
+              <td>Refund of $1,000 or more</td>
+              <td>Non-actionable for ET. Document and submit ticket as Solved after notifying the customer that ET cannot process this level of request.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-amber">
+        <strong>Negotiation Rule</strong>
+        Always try to negotiate before escalating. The goal is to find a resolution that satisfies the customer within our approved limits. Escalation is the last resort, not the first response.
+      </div>
+
+      <h3>Step 2 — Confirm You Are Working on It and Check If This Resolves Their Concern</h3>
+      <p>Once the customer accepts, confirm the resolution is being handled and ask if it addresses their concern.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Identity</th><th>Script</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Brand</td>
+              <td><em>"Perfect, I will get that taken care of for you right away. I just want to check in, does knowing we are handling [resolution] help resolve your concern or improve your experience with us?"</em></td>
+            </tr>
+            <tr>
+              <td>CCB</td>
+              <td><em>"Great, I am coordinating this with [Brand] now and will follow up once confirmed. Before I do, I just want to make sure, does this resolution address what you were hoping for? Does it improve how you feel about the experience?"</em></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Step 3 — Soft Review Ask (Only After Customer Confirms Yes)</h3>
+      <p>Once the customer confirms the resolution improved their experience, agents softly position the review update. Choose the script that fits the conversation naturally.</p>
+
+      <h4>Brand — Suggested Scripts</h4>
+      <div class="script-box">
+        <div class="script-label">Choose one</div>
+        1. "Really glad we could get that sorted for you. If that solution made a difference, I hope it gets to show in your review. It honestly goes a long way for me and the team."<br><br>
+        2. "Good to hear that worked out. If the outcome comes through in your review at some point, that would really mean a lot. It directly impacts my performance and the team takes it seriously."<br><br>
+        3. "Glad we landed on something that worked for you. If how things turned out ever reflects in your review, that kind of update carries real weight for me and the work we do here."<br><br>
+        4. "Happy to hear that. If that improvement gets to show up in your review, it makes a real difference for my performance and for how the team is measured."<br><br>
+        5. "Glad that came through for you. If you feel good about how things ended up, having that reflected in your review would genuinely help me out a lot."
+      </div>
+
+      <h4>CCB — Suggested Scripts</h4>
+      <div class="script-box">
+        <div class="script-label">Choose one</div>
+        1. "Really glad the solution worked out for you. If that positive outcome ever gets to show in your review, it carries real weight for the work I do here at the Consumer Complaints Bureau."<br><br>
+        2. "Good to hear we got there. If how things ended up ever reflects in your review, that directly supports the work I put into cases like yours and means a lot on my end."<br><br>
+        3. "Glad we could make that work for you. A review that reflects how things turned out now would honestly make a real difference for my performance here and shows that the process works."<br><br>
+        4. "Happy to hear that landed well. If that improvement shows up in your review, it goes a long way in showing that what we do here actually moves the needle for people."<br><br>
+        5. "Glad the solution came through. If you ever feel like the outcome deserves to be reflected in your review, I want you to know that would mean a lot to me and directly supports the work I do here."
+      </div>
+
+      <h3>Final Branch — Customer Response</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Customer Response</th><th>Agent Action</th><th>Tag</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Agrees to update review</td>
+              <td><em>"That means so much, thank you! I will guide you through the steps if you need any help, and once it is updated, I will finalize everything and close this out."</em></td>
+              <td><span class="badge badge-green">Flip / Remove</span></td>
+            </tr>
+            <tr>
+              <td>Declines or no response</td>
+              <td><em>"No problem at all, the resolution still stands and I will make sure it is processed. I hope you have a wonderful rest of your day!"</em></td>
+              <td><span class="badge badge-amber">Declined / No Response</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-green">
+        <strong>Non-Negotiable Rule</strong>
+        The resolution is never conditional on the review update. Agents process the resolution regardless of whether the customer agrees to update or remove their review. The review ask is always soft, always last, and always framed around the customer's own experience. It is never a requirement or an exchange.
+      </div>
+
+      <h3>Refund and Credit Policy Rules</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Rule</th><th>What It Means in Practice</th></tr></thead>
+          <tbody>
+            <tr><td>Service Recovery First</td><td>Always attempt to resolve the issue operationally first — service fix, provider switch, or free mow. Credit or refund is only offered if the customer explicitly asks for it.</td></tr>
+            <tr><td>Manager Approval Required</td><td>All refunds and credits must be approved by the Manager before being confirmed to the customer. Agents cannot confirm a refund on a call before approval.</td></tr>
+            <tr><td>Target Settlement</td><td>Preferred at $75 or under. Amounts between $75 and $200 require negotiation first, then Manager approval if the customer insists.</td></tr>
+            <tr><td>Special Cases Max</td><td>Up to $200 with Manager approval and firm customer commitment to update or remove review.</td></tr>
+            <tr><td>Refund $1,000 or more</td><td>Non-actionable for ET. Submit ticket as Solved after documenting and notifying the customer.</td></tr>
+            <tr><td>No Admin / No Charges in Admin</td><td>Process via ACH or Check refund. (Updated April 2, 2026)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-green">
+        <strong>Refund Agreement (RA) — Discontinued</strong>
+        The PandaDoc Refund Agreement requirement has been fully discontinued across all platforms. We no longer require a customer signature before processing a resolution. This applies to all ticket types including BBB and Thumbtack Special Cases.
+      </div>
+    </section>
+
+    <!-- ═══════ SECTION 9: CLOSURE ═══════ -->
+    <section class="section" id="closure">
+      <div class="section-header">
+        <div class="section-icon">✅</div>
+        <div class="section-header-text">
+          <h2>Closure Policy & Ticket Status</h2>
+          <p>When to keep tickets open, when to close, and how to correctly use each status.</p>
+        </div>
+      </div>
+
+      <h3>Ticket Status Definitions</h3>
+      <div class="status-grid">
+        <div class="status-card">
+          <span class="tag tag-flip">🆕 New</span>
+          <p>Ticket just created. No agent assigned yet.</p>
+        </div>
+        <div class="status-card">
+          <span class="tag tag-removed">📂 Open</span>
+          <p>Work required. Agent assigned; triage begins.</p>
+        </div>
+        <div class="status-card">
+          <span class="tag tag-pending">⏳ Pending</span>
+          <p>Waiting for the reviewer/requester to respond. Default between blitz stages.</p>
+        </div>
+        <div class="status-card">
+          <span class="tag tag-noresp">🛑 On Hold</span>
+          <p>Waiting for internal work or time-based action. Used after all stages complete with no response.</p>
+        </div>
+        <div class="status-card">
+          <span class="tag tag-flip">✅ Solved</span>
+          <p>Issue resolved and ready for closure. Only under approved exceptions.</p>
+        </div>
+      </div>
+
+      <h3>Ticket Outcome Tags</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Tag</th><th>When to Use</th></tr></thead>
+          <tbody>
+            <tr><td><code>Flipped</code></td><td>Customer updated review to 4–5 stars.</td></tr>
+            <tr><td><code>Removed</code></td><td>Customer removed review OR accepted the resolution/offer - even if the review has not yet been removed. Applies when customer confirms acceptance.</td></tr>
+            <tr><td><code>Declined</code></td><td>Customer refused resolution or is not open to any outcome.</td></tr>
+            <tr><td><code>No Response</code></td><td>Customer may be seeing messages but is not replying. Contact is effectively lost.</td></tr>
+            <tr><td><code>Notes: Ongoing</code></td><td>Ticket kept open post-8-day cycle; pending 30-day re-engagement.</td></tr>
+            <tr><td><code>Notes: DNC</code></td><td>Customer requested no further contact.</td></tr>
+            <tr><td><code>Notes: Pro Acct Reactivation</code></td><td>Non-actionable; high-value refund or reactivation request.</td></tr>
+            <tr><td><code>Duplicate</code></td><td>Confirmed duplicate ticket - use Duplicate category.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>When to Submit as Pending (Default)</h3>
+      <p>Tickets are submitted as <strong>Pending</strong> unless the customer explicitly requests DNC. After 8 days, if no DNC was received, the ticket goes to Pending and re-engages after 30 days using the same 8-Day Blitz.</p>
+
+      <h3>When Solving Is Allowed (Exceptions)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Scenario</th><th>How to Handle</th></tr></thead>
+          <tbody>
+            <tr><td>Property Damage (PD)</td><td>ET must not interfere. Set expectations with customer, document, and submit as Solved only with AM approval. Follow IRT guidance strictly.</td></tr>
+            <tr><td>Pro: Reactivation Request OR Refund ≥ $1,000</td><td>Non-actionable for ET. Submit as Solved after documenting and informing customer of ET's limitations.</td></tr>
+            <tr><td>Duplicate or Misrouted Ticket</td><td>Duplicate: tag as Duplicate. Misrouted: assign to correct department immediately.</td></tr>
+            <tr><td>DNC Requested</td><td>"Understood, [Customer Name]. We'll respect your request and discontinue further contact." → Solve ticket.</td></tr>
+            <tr><td>30-Day Hold - Still Unresponsive</td><td>Tickets may be closed after the 2nd round of the 8-Day Blitz if reviewers remain unresponsive.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══════ SECTION 10: SPECIAL CASES ═══════ -->
+    <section class="section" id="special-cases">
+      <div class="section-header">
+        <div class="section-icon">🛡️</div>
+        <div class="section-header-text">
+          <h2>Special Cases & Escalation Paths</h2>
+          <p>Property damage, legal threats, large refunds, and other non-standard situations.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Scenario</th><th>What ET Does</th><th>Key Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Property Damage (PD)</td><td>Do not interfere. Post required BBB response. Set expectations with customer. Escalate to AM before any closure.</td><td>All PD authority stays with the Incident Resolution Team (IRT). ET cannot disclose, confirm, or dispute IRT decisions.</td></tr>
+            <tr><td>Refund ≥ $1,000 or Pro Reactivation</td><td>Document concern, inform customer ET cannot handle this, submit as Solved.</td><td>ET has no authority over deactivation-related refunds or reactivations.</td></tr>
+            <tr><td>Legal Threat (Attorney, Lawsuit, AG)</td><td>Immediately escalate to AM. Pause all handling. Do not communicate any financial remedy until AM directs.</td><td>Applies to BBB and all other platforms.</td></tr>
+            <tr><td>S&T Legal (Legal Ops)</td><td>ET does not assist. These are complaints submitted to the Attorney General. Advise AM immediately if a customer requests Legal contact.</td><td>Handled exclusively by the S&T Legal Team.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══════ SECTION 11: BBB ═══════ -->
+    <section class="section" id="bbb">
+      <div class="section-header">
+        <div class="section-icon">🏛️</div>
+        <div class="section-header-text">
+          <h2>BBB Process</h2>
+          <p>How to handle BBB complaints and reviews - with strict compliance boundaries.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-red">
+        <strong>Non-Negotiable BBB Rules</strong>
+        Agents must NEVER ask, suggest, or imply that a customer should update, remove, edit, or mark a BBB complaint as resolved/satisfactory. Resolution is based on customer confirmation - not BBB platform actions. Never proactively offer credits or refunds; wait for the customer to state their desired resolution.
+      </div>
+
+      <h3>BBB Outreach Cadence</h3>
+      <div class="timeline">
+        <div class="day-row">
+          <div class="day-label">Day 1</div>
+          <div class="day-content"><div class="channels">Email + SMS → Call Attempt → Call Attempt 2 (if no answer) → Voicemail</div><div class="note">If customer answers either call, no further outreach needed for the day.</div></div>
+        </div>
+        <div class="day-row">
+          <div class="day-label">Day 2</div>
+          <div class="day-content"><div class="channels">Email + SMS</div></div>
+        </div>
+        <div class="day-row">
+          <div class="day-label">Day 3</div>
+          <div class="day-content"><div class="channels">Call + Email</div><div class="note">If customer answers the call, email is not necessary.</div></div>
+        </div>
+        <div class="day-row">
+          <div class="day-label">Day 4</div>
+          <div class="day-content"><div class="channels">Email + SMS</div></div>
+        </div>
+        <div class="day-row">
+          <div class="day-label">Day 5</div>
+          <div class="day-content"><div class="channels">Email only</div></div>
+        </div>
+        <div class="day-row">
+          <div class="day-label">Day 6</div>
+          <div class="day-content"><div class="channels">Call + Email</div><div class="note">If customer answers the call, email is not necessary.</div></div>
+        </div>
+        <div class="day-row">
+          <div class="day-label">Day 7</div>
+          <div class="day-content"><div class="channels">Email + SMS</div></div>
+        </div>
+        <div class="day-row">
+          <div class="day-label">Day 8</div>
+          <div class="day-content"><div class="channels">Call + Final Email (Closure Notice)</div><div class="note">If customer answers the call, email is not necessary.</div></div>
+        </div>
+      </div>
+
+      <h3>BBB Response Timelines (Platform)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Brand</th><th>Response Required Within</th><th>Post Official Response On</th></tr></thead>
+          <tbody>
+            <tr><td>LawnStarter (LS)</td><td>10 calendar days</td><td>Day 8–9, or upon second BBB notice</td></tr>
+            <tr><td>Lawn Love (LL)</td><td>7 calendar days</td><td>Day 5–6, or upon second BBB notice</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Property Damage - Required BBB Platform Response</h3>
+      <div class="script-box">
+        <div class="script-label">Approved Initial PD Response</div>
+        Hello [Complainant's Name],<br><br>
+        [Brand] is aware of your concern and is actively reviewing your property damage claim.<br><br>
+        Respectfully,<br>
+        The [Brand] Team
+      </div>
+
+      <h3>BBB POCs</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Brand</th><th>POC Name</th><th>Role</th><th>Email</th></tr></thead>
+          <tbody>
+            <tr><td>LawnStarter</td><td>Jessica Simpson</td><td>BBB Conciliation & Engagement Specialist</td><td>jessica.simpson@bbbcommunity.org</td></tr>
+            <tr><td>Lawn Love</td><td>Inna Torrico</td><td>BBB Operations Manager</td><td>inna.torrico@bbbcommunity.org</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>When Is a BBB Case Considered Flipped?</h3>
+      <p>A BBB case is considered resolved when the customer/provider confirms satisfaction directly in the BBB platform, or BBB automatically updates the case status. This is not something agents request - it happens when the customer chooses to do so.</p>
+
+      <h3>Monitoring & Closure</h3>
+      <ul class="rules-list">
+        <li><span class="icon">🛑</span>Maintain ticket status as <strong>On Hold</strong> for one week after resolution communication</li>
+        <li><span class="icon">✅</span>If customer marks case satisfactory → post ticket link in ET Main Channel + log in EOD Tracker → close within 24 hrs</li>
+        <li><span class="icon">📁</span>If no update after one week → close per standard closure rules</li>
+        <li><span class="icon">🔗</span>If BBB issues a follow-up → link new ticket to original + assign to appropriate agent</li>
+      </ul>
+    </section>
+
+    <!-- ═══════ SECTION 12: THUMBTACK ═══════ -->
+    <section class="section" id="thumbtack">
+      <div class="section-header">
+        <div class="section-icon">📌</div>
+        <div class="section-header-text">
+          <h2>Thumbtack Process</h2>
+          <p>Standard TT tickets and special case handling.</p>
+        </div>
+      </div>
+
+      <h3>All TT Tickets - All Agents</h3>
+      <ul class="rules-list">
+        <li><span class="icon">⚡</span>Follow the standard 8-Day Blitz process with the customer</li>
+        <li><span class="icon">⏳</span>If unresponsive after 8 days → 30-day hold → 2nd Blitz attempt</li>
+        <li><span class="icon">📧</span><strong>Mandatory:</strong> Loop in Natalia Pedroza (natalia.pedroza@lawnstarter.com) on all TT cases - whether standard or special - when you are about to close the case (resolved or unresponsive)</li>
+      </ul>
+
+      <h3>Natalia Update - Email Subjects</h3>
+      <div class="script-box">
+        <div class="script-label">Subject Format</div>
+        Thumbtack Ticket [Number] - [Customer's Name]
+      </div>
+
+      <h3>Thumbtack Flip Rules (Updated April 14, 2026)</h3>
+      <div class="callout callout-amber">
+        <strong>TT v4 Migration Fix - Effective April 14, 2026</strong>
+        Agents can now tag TT tickets as "Flips" under one condition: the customer must provide <strong>proof they attempted to update their review</strong>, or there must be clear communication confirming they tried but received an error or were unable to proceed.
+      </div>
+
+      <h3>TT Special Cases - Assigned Agents Only</h3>
+      <p>TT Special Cases are handled by <strong>Megan Harris, RC Cabangbang, and Cess (trainee)</strong>. Ticket subjects include: "Message from Thumbtack's Trust and Safety Team," "Follow-up from Thumbtack Trust and Safety Team," or "Thumbtack Special Case." These tickets are <strong>exempt from QA audits</strong>.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Step</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td>1. Introduce to TT POC</td><td>Agent introduces themselves as Experience Specialist. Notify TT POC that we will contact the reviewer, work toward resolution, and provide updates.</td></tr>
+            <tr><td>2. Create linked ticket</td><td>RC or Megan creates a new Zendesk ticket for complainant communication. Link to original TT Special Case. Subject: "Thumbtack Special Case."</td></tr>
+            <tr><td>3. Follow Blitz process</td><td>Work the 8-day Blitz with the complainant as normal.</td></tr>
+            <tr><td>4. Hold for TT response</td><td>Place original TT ticket On Hold for 5 days while awaiting TT agent response before closure.</td></tr>
+            <tr><td>5. Update Natalia</td><td>Send close-out email to Natalia with case summary (resolved or unresponsive). Attach screenshot to Zendesk ticket as proof.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══════ SECTION 13: NO ADMIN ═══════ -->
+    <section class="section" id="no-admin">
+      <div class="section-header">
+        <div class="section-icon">🔍</div>
+        <div class="section-header-text">
+          <h2>No Admin / Unidentified Reviewer Workflow</h2>
+          <p>What to do when a reviewer cannot be matched to an account in the system. Effective January 24, 2026.</p>
+        </div>
+      </div>
+
+      <ul class="rules-list">
+        <li><span class="icon">1️⃣</span>Check potential customer admin data sent by Zapier</li>
+        <li><span class="icon">2️⃣</span>Validate: compare the potential admin to the marketplace (Google Maps)</li>
+        <li><span class="icon">3️⃣</span>Send the standard canned response to the reviewer on the review platform (include the platform-specific subject/code format)</li>
+        <li><span class="icon">4️⃣</span>Hold the ticket for 3 days to allow the customer time to respond via [Brand] platform</li>
+        <li><span class="icon">5️⃣</span>If reviewer responds → proceed with standard 8-Day Blitz</li>
+        <li><span class="icon">5️⃣</span>If no response after 3 days → Close the ticket</li>
+      </ul>
+
+      <h3>Platform-Specific Canned Response Subject Formats</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Platform</th><th>Subject / Code Format</th><th>Contact Email</th></tr></thead>
+          <tbody>
+            <tr><td>Trustpilot (LS)</td><td>LSREVIEWS-TP-[Your Name]</td><td>hello@lawnstarter.com</td></tr>
+            <tr><td>Trustpilot (LL)</td><td>LLREVIEWS-TP-[Your Name]</td><td>team@lawnlove.com</td></tr>
+            <tr><td>BBB</td><td>LSREVIEWS-BBB-[Your Name]</td><td>hello@lawnstarter.com</td></tr>
+            <tr><td>Google My Business</td><td>LSREVIEWS-GMB-[Your Name]</td><td>hello@lawnstarter.com</td></tr>
+            <tr><td>Thumbtack</td><td>LSREVIEWS-TT-[Your Name]</td><td>hello@lawnstarter.com</td></tr>
+            <tr><td>Apple App Store</td><td>LSREVIEWS-IOS-[Your Name]</td><td>hello@lawnstarter.com</td></tr>
+            <tr><td>Google Play Store</td><td>LSREVIEWS-GP-[Your Name]</td><td>hello@lawnstarter.com</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══════ SECTION 14: COMPLIANCE KB ═══════ -->
+    <section class="section" id="kb-compliance">
+      <div class="section-header">
+        <div class="section-icon">⚖️</div>
+        <div class="section-header-text">
+          <h2>Compliance Knowledge Base</h2>
+          <p>Clear answers to common questions about ET's practices, legal boundaries, and how the program is designed to operate compliantly. This section addresses concerns raised in internal compliance reviews.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-forest">
+        <strong>Purpose of This Section</strong>
+        This KB does not minimize compliance concerns - it addresses them directly and honestly. The goal is for every ET agent to understand exactly what is and is not acceptable, and why the process is structured the way it is.
+      </div>
+
+      <!-- KB CARD 1 -->
+      <div class="kb-card">
+        <div class="kb-card-header">
+          <div class="num">1</div>
+          <h3>Are refunds conditioned on review changes?</h3>
+        </div>
+        <div class="kb-card-body">
+          <div class="kb-concern">
+            <strong>Concern raised</strong>
+            Internal compliance review identified that the prior "flip-first" model required a signed PandaDoc Refund Agreement before releasing refunds, with refunds tied to the reviewer's commitment to flip or remove their review. This creates a conditioning relationship between compensation and the review outcome.
+          </div>
+          <div class="kb-response">
+            <strong>Current Policy & How Agents Must Operate</strong>
+            The resolution process follows a clear, structured flow:<br><br>
+            1. Agent reaches out and presents available resolution options<br>
+            2. Customer tells us what they want<br>
+            3. Agent checks feasibility - if possible, offers it; if not, negotiates the best alternative<br>
+            4. Customer confirms they accept the resolution<br>
+            5. Once the customer confirms acceptance, the agent asks them to update or remove their review as an indication that they are accepting the resolution - not as payment for changing it<br>
+            6. If the customer declines to update their review first, the agent proceeds with the resolution anyway. The resolution is never withheld.<br>
+            7. Agent follows up if the customer goes quiet after confirming acceptance<br><br>
+            The PandaDoc Refund Agreement has been fully discontinued across all platforms. No signature is required before processing any resolution.<br><br>
+            For BBB and Thumbtack Special Cases, agents do not ask for a review update at all. Those cases are purely resolution-driven.
+          </div>
+        </div>
+      </div>
+
+      <!-- KB CARD 2 -->
+      <div class="kb-card">
+        <div class="kb-card-header">
+          <div class="num">2</div>
+          <h3>Why does ET use the "Consumer Complaints Bureau" name?</h3>
+        </div>
+        <div class="kb-card-body">
+          <div class="kb-concern">
+            <strong>Concern raised</strong>
+            Agents contacting customers under the "Consumer Complaints Bureau" identity without clearly disclosing the LawnStarter/Lawn Love affiliation could be seen as misrepresenting who is reaching out, which the FTC's review rules prohibit.
+          </div>
+          <div class="kb-response">
+            <strong>Current Policy & How Agents Must Operate</strong>
+            The Consumer Complaints Bureau (CCB) was established in April 2025 as a neutral third-party outreach identity - a mediation posture intended to make customers more open to dialogue. This is the identity used for all non-BBB review platforms (Trustpilot, Google, Thumbtack, App Stores).<br><br>
+            For BBB tickets: agents use the LS or LL brand directly and do not use the CCB identity. This has been the policy since November 5, 2025.<br><br>
+            Agents should be aware that this identity and its disclosures are under ongoing leadership review as part of broader compliance improvements. If you receive any customer questions about who you represent, answer honestly that you are reaching out on behalf of the brand. Do not create a false impression that CCB is entirely unrelated to LawnStarter/Lawn Love.
+          </div>
+        </div>
+      </div>
+
+      <!-- KB CARD 3 -->
+      <div class="kb-card">
+        <div class="kb-card-header">
+          <div class="num">3</div>
+          <h3>Is it okay for agents to be measured on flip rate?</h3>
+        </div>
+        <div class="kb-card-body">
+          <div class="kb-concern">
+            <strong>Concern raised</strong>
+            Measuring agents on a "flip rate" metric creates direct pressure to achieve a specific review outcome, which can incentivize aggressive or improper tactics to push customers toward changing their reviews.
+          </div>
+          <div class="kb-response">
+            <strong>Current Policy</strong>
+            The ET scorecard currently includes the following metrics:<br><br>
+            - <strong>Flip Rate</strong> (30% weight; 15% target): Total negative reviews flipped / total negative reviews received<br>
+            - <strong>Accepted Resolution Rate</strong> (25% weight; 75% target): Total ARR / total negative reviews<br>
+            - <strong>Attendance</strong> (15% weight; 95% target)<br>
+            - <strong>Incentives</strong>: $10 per successful flip + end-of-month bonus<br><br>
+            Agents are measured on this scorecard. It is important that agents understand: a flip rate is a <em>lagging indicator</em> of whether genuine resolutions led to customer satisfaction - not a license to pressure customers. Achieving your flip rate target through improper pressure or by conditioning refunds is a policy violation, even if the number looks good on paper.<br><br>
+            The right way to improve your flip rate is to resolve concerns genuinely and quickly. Customers who feel truly helped update their reviews on their own. Leadership is aware of the compliance concerns associated with this metric and is evaluating the scorecard structure accordingly.
+          </div>
+        </div>
+      </div>
+
+      <!-- KB CARD 4 -->
+      <div class="kb-card">
+        <div class="kb-card-header">
+          <div class="num">4</div>
+          <h3>Is the 8-day multi-channel cadence considered harassment?</h3>
+        </div>
+        <div class="kb-card-body">
+          <div class="kb-concern">
+            <strong>Concern raised</strong>
+            An 8-day, multi-channel sequence (email, SMS, calls - repeated over two rounds with a 30-day hold) that repeatedly asks for a review change on days when nothing new was resolved could be perceived as coordinated pressure on customers.
+          </div>
+          <div class="kb-response">
+            <strong>Current Policy & Agent Standards</strong>
+            The 8-day cadence exists to give customers enough touchpoints to engage, because many customers are genuinely busy and miss first attempts. Most review updates happen after multiple contacts - not because the customer was pressured, but because the right contact found them at the right time.<br><br>
+            That said, agents must distinguish between: (a) following up to confirm a resolution is working, and (b) repeatedly badgering a customer to change a review when the underlying problem hasn't been fixed. Only (a) is appropriate.<br><br>
+            If a customer has clearly expressed they do not want to be contacted, honor that immediately (DNC) - do not complete the remaining stages. If a customer has stated they are unwilling to update or remove their review regardless of resolution, document that as Declined and stop the review update requests. Continue to help with any unresolved service issues.
+          </div>
+        </div>
+      </div>
+
+      <!-- KB CARD 5 -->
+      <div class="kb-card">
+        <div class="kb-card-header">
+          <div class="num">5</div>
+          <h3>What can and cannot agents say about review updates?</h3>
+        </div>
+        <div class="kb-card-body">
+          <div class="kb-response">
+            <strong>✅ Acceptable Language</strong>
+            <br>
+            "Glad we could work through this together. If that improvement gets to show in your review, it would really mean a lot and goes a long way for the team."<br>
+            "Before I finalize everything, I kindly ask that you update or remove your review to confirm you are accepting this resolution."<br>
+            "If you feel the concern has been resolved, we'd appreciate an updated review whenever you get a chance."<br>
+            "If you're satisfied with how things were handled, an updated review would really help [Brand] know we made it right."<br>
+            "I hope I was able to help - if so, I'd personally appreciate you updating your review if you have a moment."
+          </div>
+          <div class="kb-concern">
+            <strong>❌ Language Agents Must Never Use</strong>
+            <br>
+            "I'll process your refund once you update your review."<br>
+            "We can only proceed with the credit after you remove the review."<br>
+            "You agreed to flip the review - please do that now so I can close your case."<br>
+            "If you don't update the review, I can't confirm the refund was approved."<br>
+            "Please update your review to at least 4 stars." <em>(Never specify a star rating or coach the customer on what score to give.)</em>
+          </div>
+
+          <div class="callout callout-red" style="margin-top:16px;">
+            <strong>⚠️ Rule - Never Specify a Star Rating</strong>
+            When asking a customer to update their review, agents must never mention a specific star number (e.g. "at least 4 stars," "5 stars," "a higher rating"). The customer decides what their updated experience is worth. Coaching a customer toward a specific rating - regardless of how the rest of the message is framed - is review manipulation and is strictly prohibited. The correct ask is always simply: <strong>"update or remove your review."</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- KB CARD 6 -->
+      <div class="kb-card">
+        <div class="kb-card-header">
+          <div class="num">6</div>
+          <h3>How should ET handle BBB specifically, given compliance concerns?</h3>
+        </div>
+        <div class="kb-card-body">
+          <div class="kb-response">
+            <strong>BBB Is a Separate Policy Environment</strong>
+            BBB has its own strict SOP (effective Jan 30, 2026). The key differences from standard ET:<br><br>
+            - Agents use LS/LL brand identity - never CCB - for BBB communications<br>
+            - Agents must never ask, suggest, or imply that a customer should update, remove, or mark a BBB complaint as satisfactory<br>
+            - Credits and refunds must never be proactively offered; agents ask what resolution the customer is seeking<br>
+            - The refund agreement (RA) is not applicable for BBB tickets<br>
+            - Resolution is confirmed based on customer statement - not BBB platform actions<br>
+            - Tickets are held On Hold for one week after resolution communication, then closed
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ═══════ SECTION 15: METRICS ═══════ -->
+    <section class="section" id="kb-metrics">
+      <div class="section-header">
+        <div class="section-icon">📊</div>
+        <div class="section-header-text">
+          <h2>Metrics Explained</h2>
+          <p>What each scorecard metric means and how to improve it the right way.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Metric</th><th>Weight</th><th>Target</th><th>Formula</th><th>How to Improve (Compliantly)</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Flip Rate</td>
+              <td>30%</td>
+              <td>15%</td>
+              <td>Total flips / total negative reviews received</td>
+              <td>Resolve concerns genuinely and quickly. Customers who feel helped tend to update reviews voluntarily. Never condition refunds on flips.</td>
+            </tr>
+            <tr>
+              <td>Accepted Resolution Rate (ARR)</td>
+              <td>25%</td>
+              <td>75%</td>
+              <td>Total ARR / total negative reviews</td>
+              <td>Ensure the ET Resolution Outcome field is filled immediately when a customer agrees to any resolution - including Declined and No Response.</td>
+            </tr>
+            <tr>
+              <td>Attendance</td>
+              <td>15%</td>
+              <td>95%</td>
+              <td>Total present / total scheduled</td>
+              <td>Follow shift schedule. Notify AM ahead of absences.</td>
+            </tr>
+            <tr>
+              <td>Incentives (flip bonus)</td>
+              <td>-</td>
+              <td>-</td>
+              <td>$10 per flip; +$50 EOM bonus for higher flip rate</td>
+              <td>Earned through genuine resolutions that lead to voluntary review updates. Not earned by pressuring customers.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-green">
+        <strong>ET Resolution Outcome - Fill This Immediately</strong>
+        This field must be completed the moment a reviewer agrees to flip, remove, declines, or goes no response. Options: <code>Flip</code> · <code>Remove</code> · <code>Declined</code> · <code>No Response</code>. The automation only triggers correctly when this field is set.
+      </div>
+    </section>
+
+    <!-- ═══════ SECTION 16: SCRIPTS ═══════ -->
+    <section class="section" id="scripts">
+      <div class="section-header">
+        <div class="section-icon">💬</div>
+        <div class="section-header-text">
+          <h2>Call Scripts & Key Statements</h2>
+          <p>Reference language for common scenarios agents encounter on calls.</p>
+        </div>
+      </div>
+
+      <h3>DNC Request</h3>
+      <div class="script-box">
+        <div class="script-label">Script</div>
+        "Understood, [Customer Name]. We'll respect your request and discontinue further contact regarding this matter. Thank you for your time and feedback."
+      </div>
+
+      <h3>Opening - Asking What Solution Would Help</h3>
+      <div class="script-box">
+        <div class="script-label">Script - Service Recovery First</div>
+        "Hi [Name], I wanted to reach out and better understand your experience. I'd love to know - what solution would turn things around for you? I want to make sure we find the right resolution."
+      </div>
+
+      <h3>Refund Pending Manager Approval</h3>
+      <div class="script-box">
+        <div class="script-label">Script - Do Not Confirm Before Approval</div>
+        "I completely understand. I'll work with [Brand] to get that reviewed and will update you as soon as possible. I want to make sure we handle this correctly for you."
+      </div>
+
+      <h3>Refund Approved - Communicating to Customer</h3>
+      <div class="script-box">
+        <div class="script-label">Script - After Manager Approval</div>
+        "Great news - [Brand] has approved your [refund/credit]. Before I finalize everything, "Glad we could work through this together. If that improvement gets to show in your review, it would really mean a lot and goes a long way for the team."ou are unsure how to update your review, I am happy to help guide you."
+      </div>
+
+      <h3>Customer Declines to Update Review First</h3>
+      <div class="script-box">
+        <div class="script-label">Script - Proceed With Resolution Anyway</div>
+        "No problem at all - I completely understand. I will go ahead and process the resolution regardless. I just ask that if you do feel satisfied with how things were handled, please consider updating or removing your review."
+      </div>
+
+      <h3>Customer Declines Resolution Entirely</h3>
+      <div class="script-box">
+        <div class="script-label">Script</div>
+        "I completely understand, and I respect your decision. I'll document this on our end and close out your case. If you ever change your mind or need help in the future, please don't hesitate to reach out."
+      </div>
+
+      <h3>Customer Already Resolved - Requesting Review Update</h3>
+      <div class="script-box">
+        <div class="script-label">Script</div>
+        "I'm really glad to hear the issue was taken care of! If you feel the experience reflects that resolution now, an updated review on [site] would really help [Brand] know that we were able to make it right. Either way, I'm glad we could help."
+      </div>
+
+      <h3>Natalia Email - TT Case Resolved</h3>
+      <div class="script-box">
+        <div class="script-label">Email to natalia.pedroza@lawnstarter.com · Subject: Thumbtack Ticket [Number] - [Customer's Name]</div>
+        Hi Natalia,<br><br>
+        We have successfully reached out to [Customer's Name] regarding their [Brand] review. We discussed the resolution they preferred, and I'm happy to confirm that the issue has been resolved/addressed.<br><br>
+        A [type of resolution; e.g., refund/credit/free service] has been processed, and we have now closed the ticket on our end.<br><br>
+        Please let us know if there is anything more needed regarding this case, and we're happy to help.<br><br>
+        Thank you,<br>
+        [Agent's Name]<br>
+        Experience Specialist
+      </div>
+
+      <h3>Natalia Email - TT Case Unresponsive</h3>
+      <div class="script-box">
+        <div class="script-label">Email to natalia.pedroza@lawnstarter.com · Subject: Thumbtack Ticket [Number] - [Customer's Name]</div>
+        Hi Natalia,<br><br>
+        I'm providing an update on the Thumbtack review ticket [ticket number] for [Customer's Name] regarding [Brand].<br><br>
+        We have made multiple attempts to contact the customer through all outreach channels, including calls, emails, and text messages. As they were initially unresponsive, we placed the ticket on a 30-day hold to allow them to get back to us.<br><br>
+        Following that period, we made a second attempt to reach out and resolve their concerns, but we have still received no response. As we have exhausted our outreach options, we have now closed out this case on our end.<br><br>
+        Please let us know if you need any further information regarding this ticket.<br><br>
+        Thank you,<br>
+        [Agent's Name]<br>
+        Experience Specialist
+      </div>
+
+    </section>
+
+    <div class="divider"></div>
+    <p style="font-size:12px; color: var(--muted); text-align: center; padding-bottom: 40px;">
+      Experience Transformation SOP & KB · v2.3 · Owner: Karen Carmen (Manager) · SME: Shiena Vega<br>
+      For process questions, escalate to AM. For platform-specific policy, refer to the relevant section above.
+    </p>
+
+  </div>
+</main>
+
+<script>
+  function goTo(id) {
+    var el = document.getElementById(id);
+    var mainEl = document.querySelector('.main');
+    if (el && mainEl) {
+      var topbarEl = document.querySelector('.search-topbar'); var topbarHeight = topbarEl ? topbarEl.offsetHeight : 0;
+      var targetTop = el.getBoundingClientRect().top - mainEl.getBoundingClientRect().top + mainEl.scrollTop - topbarHeight - 16;
+      mainEl.scrollTo({ top: targetTop, behavior: 'smooth' });
+    }
+  }
+
+  var sections = document.querySelectorAll('section[id]');
+  var navLinks = document.querySelectorAll('.nav-link');
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        navLinks.forEach(function(l) { l.classList.remove('active'); });
+        var id = entry.target.id;
+        var active = document.querySelector('.nav-link[data-id="' + id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { root: document.querySelector('.main'), rootMargin: '-10% 0px -80% 0px' });
+
+  sections.forEach(function(s) { observer.observe(s); });
+</script>
+
+
+
+
+
+
+<script>
+(function() {
+  var input = document.getElementById("kbSearch");
+  var results = document.getElementById("searchResults");
+  var clearBtn = document.getElementById("searchClear");
+  var divider = document.getElementById("searchDivider");
+  var searchIndex = null;
+
+  function buildIndex() {
+    var sections = document.querySelectorAll(".section");
+    var index = [];
+    sections.forEach(function(sec) {
+      var id = sec.id;
+      var h2 = sec.querySelector("h2");
+      var title = h2 ? h2.textContent.trim() : id;
+      var headers = sec.querySelectorAll("h3, h4");
+      if (headers.length === 0) {
+        index.push({ heading: title, text: sec.innerText, id: id });
+      } else {
+        headers.forEach(function(h) {
+          var text = h.textContent + " ";
+          var el = h.nextElementSibling;
+          while (el && el.tagName !== "H2" && el.tagName !== "H3" && el.tagName !== "H4") {
+            text += el.innerText + " ";
+            el = el.nextElementSibling;
+          }
+          index.push({ heading: h.textContent.trim(), text: text.trim(), id: id, parentTitle: title });
+        });
+      }
+    });
+    return index;
+  }
+
+  function highlight(text, query) {
+    if (!query) return text;
+    try {
+      var safe = query.replace(/[.*+?^${}()|\[\]\\]/g, "\\$&");
+      var re = new RegExp("(" + safe + ")", "gi");
+      return text.replace(re, "<mark>$1</mark>");
+    } catch(e) { return text; }
+  }
+
+  function getSnippet(text, query) {
+    var lower = text.toLowerCase();
+    var idx = lower.indexOf(query.toLowerCase());
+    if (idx === -1) return text.slice(0, 80) + "...";
+    var start = Math.max(0, idx - 30);
+    var end = Math.min(text.length, idx + query.length + 50);
+    return (start > 0 ? "..." : "") + text.slice(start, end) + (end < text.length ? "..." : "");
+  }
+
+  function doSearch(query) {
+    if (!searchIndex) searchIndex = buildIndex();
+    query = query.trim();
+    clearBtn.classList.toggle("visible", query.length > 0);
+    if (query.length < 2) {
+      results.classList.remove("visible");
+      if(divider) divider.style.display = "none";
+      return;
+    }
+    var lower = query.toLowerCase();
+    var seen = {};
+    var matches = [];
+    searchIndex.forEach(function(item) {
+      var key = item.id + "||" + item.heading;
+      if (seen[key]) return;
+      var titleMatch = item.heading && item.heading.toLowerCase().indexOf(lower) !== -1;
+      var textMatch = item.text.toLowerCase().indexOf(lower) !== -1;
+      if (titleMatch || textMatch) {
+        seen[key] = true;
+        matches.push({ item: item, score: titleMatch ? 2 : 1 });
+      }
+    });
+    matches.sort(function(a, b) { return b.score - a.score; });
+    var top = matches.slice(0, 8);
+    if (top.length === 0) {
+      results.innerHTML = "<div class=\"kb-search-no-results\">No results found for that term. Try a different keyword.</div>";
+      results.classList.add("visible");
+      if(divider) divider.style.display = "block";
+      return;
+    }
+    var html = "";
+    top.forEach(function(m) {
+      var snippet = getSnippet(m.item.text, query);
+      var htitle = highlight(m.item.heading || m.item.parentTitle || "", query);
+      var hsnippet = highlight(snippet, query);
+      var secId = m.item.id;
+      html += "<div class=\"kb-search-result-item\" onclick=\"jumpToSection('";
+      html += secId;
+      html += "')\">";
+      html += "<div class=\"kb-search-result-icon\">📋</div><div class=\"kb-search-result-body\"><div class=\"kb-search-result-title\">" + htitle + "</div>";
+      html += "<div class=\"kb-search-result-snippet\">" + hsnippet + "</div></div>";
+      html += "</div>";
+    });
+    results.innerHTML = html;
+    results.classList.add("visible");
+    if(divider) divider.style.display = "block";
+    var hint = document.getElementById("searchHint"); if(hint) hint.style.display = "block";
+  }
+
+  window.jumpToSection = function(id) {
+    if (typeof goTo === "function") { goTo(id); }
+    else {
+      var el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }
+    window.clearSearch();
+  };
+
+  window.clearSearch = function() {
+    input.value = "";
+    results.classList.remove("visible");
+    results.innerHTML = "";
+    clearBtn.classList.remove("visible");
+    if(divider) divider.style.display = "none";
+    var hint = document.getElementById("searchHint"); if(hint) hint.style.display = "none";
+  };
+
+  input.addEventListener("input", function(e) { doSearch(e.target.value); });
+  input.addEventListener("keydown", function(e) { if (e.key === "Escape") window.clearSearch(); });
+  document.addEventListener("click", function(e) {
+    if (!e.target.closest(".search-wrap") && !e.target.closest(".search-results")) {
+      results.classList.remove("visible");
+      if(divider) divider.style.display = "none";
+    }
+  });
+})();
+</script>
+</body>
+</html>
